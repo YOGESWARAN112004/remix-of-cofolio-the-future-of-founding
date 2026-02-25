@@ -1,12 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import ProblemSection from "@/components/ProblemSection";
+import WarRoomSection from "@/components/WarRoomSection";
+import PortfolioSection from "@/components/PortfolioSection";
+import NetworkSection from "@/components/NetworkSection";
+import CTASection from "@/components/CTASection";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="noise">
+      <Navbar />
+      <HeroSection />
+      <ProblemSection />
+      <WarRoomSection />
+      <PortfolioSection />
+      <NetworkSection />
+      <CTASection />
+
+      {/* Footer */}
+      <footer className="border-t border-border py-12 px-6 text-center">
+        <p className="text-muted-foreground text-sm">
+          © 2026 Cofolio. Built by builders, for builders.
+        </p>
+      </footer>
     </div>
   );
 };
