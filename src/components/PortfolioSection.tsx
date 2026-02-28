@@ -61,9 +61,8 @@ export default function PortfolioSection() {
             return (
               <motion.div
                 key={i}
-                className={`group relative glass rounded-xl p-6 cursor-pointer transition-shadow duration-500 ${
-                  card.accent === "neon" ? "hover:glow-neon" : "hover:glow-accent"
-                }`}
+                className={`group relative glass rounded-xl p-6 cursor-pointer transition-shadow duration-500 ${card.accent === "neon" ? "hover:glow-neon" : "hover:glow-accent"
+                  }`}
                 style={{ rotate, y }}
                 whileHover={{ y: -8, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
@@ -88,6 +87,23 @@ export default function PortfolioSection() {
             );
           })}
         </div>
+
+        <motion.div
+          className="text-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+        >
+          <motion.button
+            className="px-8 py-3.5 rounded-full bg-neon/10 border border-neon/30 text-neon font-semibold text-sm hover:bg-neon/20 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            Build Your Portfolio →
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );

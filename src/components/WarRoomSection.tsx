@@ -93,22 +93,20 @@ export default function WarRoomSection() {
               {kanbanCards.map((card, i) => (
                 <motion.div
                   key={i}
-                  className={`rounded-lg p-3 border ${
-                    card.status === "done"
+                  className={`rounded-lg p-3 border ${card.status === "done"
                       ? "border-neon/30 bg-neon/5"
                       : card.status === "progress"
-                      ? "border-electric/30 bg-electric/5"
-                      : "border-border bg-secondary/50"
-                  }`}
+                        ? "border-electric/30 bg-electric/5"
+                        : "border-border bg-secondary/50"
+                    }`}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.8 + i * 0.2 }}
                 >
                   <p className="text-sm text-foreground">{card.title}</p>
-                  <span className={`text-xs mt-1 inline-block ${
-                    card.status === "done" ? "text-neon" : card.status === "progress" ? "text-electric" : "text-muted-foreground"
-                  }`}>
+                  <span className={`text-xs mt-1 inline-block ${card.status === "done" ? "text-neon" : card.status === "progress" ? "text-electric" : "text-muted-foreground"
+                    }`}>
                     {card.status === "done" ? "✓ Done" : card.status === "progress" ? "→ In Progress" : "○ To Do"}
                   </span>
                 </motion.div>
@@ -125,6 +123,23 @@ export default function WarRoomSection() {
               </div>
             </div>
           </div>
+        </motion.div>
+
+        <motion.div
+          className="text-center mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+        >
+          <motion.button
+            className="px-8 py-3.5 rounded-full bg-neon/10 border border-neon/30 text-neon font-semibold text-sm hover:bg-neon/20 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            Get Early Access →
+          </motion.button>
         </motion.div>
       </div>
     </section>

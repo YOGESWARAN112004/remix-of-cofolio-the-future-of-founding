@@ -43,8 +43,8 @@ function Counter({ target, format }: { target: number; format?: boolean }) {
     ? count >= 1000000
       ? `${(count / 1000000).toFixed(1)}M`
       : count >= 1000
-      ? `${(count / 1000).toFixed(0)}K`
-      : count.toLocaleString()
+        ? `${(count / 1000).toFixed(0)}K`
+        : count.toLocaleString()
     : count.toLocaleString();
 
   return <span ref={ref}>{display}</span>;
@@ -127,6 +127,23 @@ export default function NetworkSection() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          className="mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+        >
+          <motion.button
+            className="px-8 py-3.5 rounded-full bg-neon/10 border border-neon/30 text-neon font-semibold text-sm hover:bg-neon/20 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            Join the Movement →
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );

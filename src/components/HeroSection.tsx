@@ -47,12 +47,13 @@ export default function HeroSection() {
             className="group relative px-8 py-4 rounded-full glass font-semibold text-foreground overflow-hidden"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
           >
             {/* Glow border */}
             <span className="absolute inset-0 rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-500 glow-neon" />
             {/* Inner gradient */}
             <span className="absolute inset-[1px] rounded-full bg-gradient-to-r from-neon/10 to-electric/10 group-hover:from-neon/20 group-hover:to-electric/20 transition-all duration-500" />
-            <span className="relative z-10">Claim Your Username</span>
+            <span className="relative z-10">Join the Waitlist →</span>
           </motion.button>
         </motion.div>
       </div>
