@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import ParticleField from "./ParticleField";
 
-const words = ["Stop", "Building", "Alone."];
+const words = ["Run A Giant Company.", "Your Only Employee", "Is You."];
 
 export default function HeroSection() {
   return (
@@ -13,11 +13,11 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(82_100%_55%_/_0.04)_0%,_transparent_70%)] pointer-events-none" />
 
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        <h1 className="text-6xl sm:text-8xl md:text-9xl font-bold tracking-tighter leading-[0.85] mb-8">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-[1.05] mb-8">
           {words.map((word, i) => (
             <motion.span
               key={word}
-              className={`block ${i === 2 ? "text-gradient-neon" : "text-foreground"}`}
+              className={`block ${i === words.length - 1 ? "text-gradient-neon" : "text-foreground"}`}
               initial={{ opacity: 0, y: 80 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 + i * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -33,9 +33,10 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          The portfolio platform where student founders meet, build, and ship.
+          The platform for lean giants — one-person, zero-person, and small teams
+          running companies like much bigger ones.
           <br />
-          <span className="text-foreground font-medium">No resumes. Just proof.</span>
+          <span className="text-foreground font-medium">No headcount. Just proof.</span>
         </motion.p>
 
         <motion.div

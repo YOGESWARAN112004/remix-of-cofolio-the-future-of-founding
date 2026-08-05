@@ -1,8 +1,18 @@
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
+const stages = [
+  { value: "idea", label: "Idea" },
+  { value: "building", label: "Building" },
+  { value: "live", label: "Live" },
+  { value: "scaling", label: "Scaling" },
+];
+
 export default function CTASection() {
   const [email, setEmail] = useState("");
+  const [building, setBuilding] = useState("");
+  const [stage, setStage] = useState("");
+  const [committed, setCommitted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -11,30 +21,25 @@ export default function CTASection() {
   const scale = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
 
+  const isValid = email.trim() !== "" && building.trim() !== "" && stage !== "" && committed;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-
-    const sheetUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL;
-    if (!sheetUrl || sheetUrl === "your_google_apps_script_url_here") {
-      // Fallback: just show success if no backend configured yet
-      setSubmitted(true);
-      return;
-    }
+    if (!isValid) return;
 
     setLoading(true);
     setError("");
 
     try {
-      await fetch(sheetUrl, {
+      const res = await fetch("/api/waitlist", {
         method: "POST",
-        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          timestamp: new Date().toISOString(),
-        }),
+        body: JSON.stringify({ email, building, stage }),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || "Request failed");
+      }
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again.");
@@ -69,13 +74,23 @@ export default function CTASection() {
         </motion.h2>
 
         <motion.p
-          className="text-muted-foreground mb-12 text-lg"
+          className="text-muted-foreground mb-3 text-lg"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          Join the next generation of builders.
+          Join the builders running giant companies with a team of one.
+        </motion.p>
+
+        <motion.p
+          className="text-muted-foreground/60 mb-12 text-xs tracking-[0.2em] uppercase"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+        >
+          This isn't a newsletter. It's for people building right now.
         </motion.p>
 
         <AnimatePresence mode="wait">
@@ -83,7 +98,7 @@ export default function CTASection() {
             <motion.form
               key="form"
               onSubmit={handleSubmit}
-              className="flex flex-col items-center max-w-md mx-auto"
+              className="flex flex-col items-stretch gap-3 max-w-md mx-auto text-left"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -100,18 +115,63 @@ export default function CTASection() {
                   disabled={loading}
                   className="flex-1 bg-transparent border-none outline-none text-foreground font-mono text-sm px-3 py-3 placeholder:text-muted-foreground/50 disabled:opacity-50"
                 />
-                <motion.button
-                  type="submit"
-                  disabled={loading}
-                  className="px-6 py-2.5 rounded-full bg-neon text-primary-foreground font-semibold text-sm disabled:opacity-70"
-                  whileHover={loading ? {} : { scale: 1.05 }}
-                  whileTap={loading ? {} : { scale: 0.95 }}
-                >
-                  {loading ? "Sending..." : "Enter"}
-                </motion.button>
               </div>
+
+              <div className="w-full glass rounded-2xl px-5 py-1">
+                <input
+                  type="text"
+                  value={building}
+                  onChange={(e) => setBuilding(e.target.value)}
+                  placeholder="what are you building?"
+                  disabled={loading}
+                  className="w-full bg-transparent border-none outline-none text-foreground text-sm py-3 placeholder:text-muted-foreground/50 disabled:opacity-50"
+                />
+              </div>
+
+              <div className="w-full glass rounded-2xl px-5 py-1">
+                <select
+                  value={stage}
+                  onChange={(e) => setStage(e.target.value)}
+                  disabled={loading}
+                  className="w-full bg-transparent border-none outline-none text-sm py-3 disabled:opacity-50 [&>option]:bg-background [&>option]:text-foreground"
+                  style={{ color: stage ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.5)" }}
+                >
+                  <option value="" disabled>
+                    stage — idea, building, live, or scaling?
+                  </option>
+                  {stages.map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <label className="flex items-start gap-2.5 px-2 py-1 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={committed}
+                  onChange={(e) => setCommitted(e.target.checked)}
+                  disabled={loading}
+                  className="mt-0.5 w-4 h-4 rounded accent-neon shrink-0"
+                />
+                <span className="text-xs text-muted-foreground">
+                  I'm actively building this — not just browsing.
+                </span>
+              </label>
+
+              <motion.button
+                type="submit"
+                disabled={loading || !isValid}
+                className="w-full px-6 py-3.5 rounded-full bg-neon text-primary-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                whileHover={loading || !isValid ? {} : { scale: 1.03 }}
+                whileTap={loading || !isValid ? {} : { scale: 0.97 }}
+              >
+                {loading ? "Sending..." : "Apply for Early Access →"}
+              </motion.button>
+
               {error && (
-                <p className="text-red-400 text-xs mt-3">{error}</p>
+                <p className="text-red-400 text-xs text-center">{error}</p>
               )}
             </motion.form>
           ) : (

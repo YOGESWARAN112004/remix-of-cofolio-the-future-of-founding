@@ -4,30 +4,34 @@ import { Zap, Code2, TrendingUp, Rocket } from "lucide-react";
 
 const cards = [
   {
-    title: "DeFi Protocol",
-    stack: "Rust, Solana, React",
-    velocity: "98th",
+    title: "Nomad Legal",
+    stack: "GPT-4, Next.js, Stripe",
+    stage: "Live",
+    team: "1",
     accent: "neon" as const,
     icon: Rocket,
   },
   {
-    title: "AI Code Review",
-    stack: "Python, GPT-4, FastAPI",
-    velocity: "95th",
+    title: "OneDesk Ops",
+    stack: "Python, Agents, Zapier",
+    stage: "Scaling",
+    team: "0 · AI-run",
     accent: "electric" as const,
     icon: Code2,
   },
   {
-    title: "ClimateTech Dashboard",
-    stack: "TypeScript, D3, Supabase",
-    velocity: "92nd",
+    title: "Ledger One",
+    stack: "Rust, Postgres, Plaid",
+    stage: "Building",
+    team: "1",
     accent: "neon" as const,
     icon: TrendingUp,
   },
   {
-    title: "EdTech Platform",
-    stack: "Next.js, Prisma, Stripe",
-    velocity: "89th",
+    title: "Atlas Compliance",
+    stack: "n8n, GST APIs, WhatsApp",
+    stage: "Live",
+    team: "2",
     accent: "electric" as const,
     icon: Zap,
   },
@@ -46,9 +50,9 @@ export default function PortfolioSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="text-electric text-sm tracking-[0.3em] uppercase mb-4">Living Portfolios</p>
+          <p className="text-electric text-sm tracking-[0.3em] uppercase mb-4">The Directory</p>
           <h2 className="text-4xl sm:text-6xl font-bold tracking-tight text-foreground">
-            Your Work <span className="text-gradient-neon">Is</span> Your Profile
+            Your Company <span className="text-gradient-neon">Is</span> The Listing
           </h2>
         </motion.div>
 
@@ -71,16 +75,16 @@ export default function PortfolioSection() {
                   <div className={`p-2 rounded-lg ${card.accent === "neon" ? "bg-neon/10" : "bg-electric/10"}`}>
                     <Icon className={`w-5 h-5 ${card.accent === "neon" ? "text-neon" : "text-electric"}`} />
                   </div>
-                  <span className="text-xs text-muted-foreground tracking-wider uppercase">Quest</span>
+                  <span className="text-xs text-muted-foreground tracking-wider uppercase">{card.stage}</span>
                 </div>
 
                 <h3 className="text-xl font-bold text-foreground mb-2">{card.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4">Tech: {card.stack}</p>
+                <p className="text-sm text-muted-foreground mb-4">Stack: {card.stack}</p>
 
                 <div className="flex items-center justify-between pt-4 border-t border-border">
-                  <span className="text-xs text-muted-foreground">Shipping Velocity</span>
+                  <span className="text-xs text-muted-foreground">Team Size</span>
                   <span className={`text-sm font-bold ${card.accent === "neon" ? "text-neon" : "text-electric"}`}>
-                    {card.velocity} Percentile
+                    {card.team}
                   </span>
                 </div>
               </motion.div>
@@ -101,7 +105,7 @@ export default function PortfolioSection() {
             whileTap={{ scale: 0.95 }}
             onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
           >
-            Build Your Portfolio →
+            List Your Company →
           </motion.button>
         </motion.div>
       </div>

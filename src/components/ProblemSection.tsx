@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-const phrases = ["RESUMES", "DON'T", "SHIP."];
+const phrases = ["HEADCOUNT", "ISN'T", "LEVERAGE."];
 
 export default function ProblemSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,7 +27,7 @@ export default function ProblemSection() {
             >
               <span
                 className={`text-7xl sm:text-[10rem] md:text-[14rem] font-bold tracking-tighter ${
-                  phrase === "SHIP."
+                  phrase === "LEVERAGE."
                     ? "text-gradient-neon"
                     : "text-foreground"
                 }`}
@@ -43,7 +43,7 @@ export default function ProblemSection() {
           className="absolute bottom-20 left-1/2 -translate-x-1/2 text-muted-foreground text-sm tracking-[0.3em] uppercase"
           style={{ opacity: useTransform(scrollYProgress, [0.85, 1], [0, 1]) }}
         >
-          The resume is dead
+          Scaling used to mean hiring
         </motion.div>
       </div>
     </section>

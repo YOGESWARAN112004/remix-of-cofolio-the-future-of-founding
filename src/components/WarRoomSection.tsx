@@ -3,20 +3,20 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { MessageSquare, CheckCircle2, Code2 } from "lucide-react";
 
 const chatMessages = [
-  { user: "Alex", msg: "Just pushed the auth module 🔥", delay: 0 },
-  { user: "Sam", msg: "Landing page is live!", delay: 1.5 },
-  { user: "Jordan", msg: "Let's ship this tonight", delay: 3 },
+  { user: "You", msg: "Ship the landing page 🔥", delay: 0 },
+  { user: "Cofounder AI", msg: "Deployed. Also filed your GST return.", delay: 1.5 },
+  { user: "Ops Agent", msg: "Compliance check passed ✅", delay: 3 },
 ];
 
 const kanbanCards = [
   { title: "Auth Flow", status: "done" },
-  { title: "Payment API", status: "progress" },
-  { title: "Dashboard UI", status: "todo" },
+  { title: "GST Filing", status: "progress" },
+  { title: "Investor Update", status: "todo" },
 ];
 
 function TypingCursor() {
   const [text, setText] = useState("");
-  const code = "const team = await cofolio.match(skills);";
+  const code = 'const cofounder = await cofolio.spawn("ops-agent");';
 
   useEffect(() => {
     let i = 0;
@@ -56,7 +56,7 @@ export default function WarRoomSection() {
         >
           <p className="text-neon text-sm tracking-[0.3em] uppercase mb-4">The War Room</p>
           <h2 className="text-4xl sm:text-6xl font-bold tracking-tight text-foreground">
-            Where Teams <span className="text-gradient-neon">Come Alive</span>
+            Where Your Company <span className="text-gradient-neon">Comes Alive</span>
           </h2>
         </motion.div>
 

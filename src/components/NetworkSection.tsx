@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 const stats = [
-  { label: "Teams Formed", value: 1402, suffix: "" },
-  { label: "Lines Shipped", value: 8200000, suffix: "", format: true },
-  { label: "Universities", value: 127, suffix: "+" },
+  { label: "Lean Giants Building", value: 1402, suffix: "" },
+  { label: "Agents Deployed", value: 8200000, suffix: "", format: true },
+  { label: "Countries", value: 47, suffix: "+" },
 ];
 
 function Counter({ target, format }: { target: number; format?: boolean }) {
@@ -101,9 +101,9 @@ export default function NetworkSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="text-neon text-sm tracking-[0.3em] uppercase mb-4">The Network</p>
+          <p className="text-neon text-sm tracking-[0.3em] uppercase mb-4">The Community</p>
           <h2 className="text-4xl sm:text-6xl font-bold tracking-tight text-foreground mb-16">
-            A Global <span className="text-gradient-neon">Movement</span>
+            A Global <span className="text-gradient-neon">Community</span> Of Builders
           </h2>
         </motion.div>
 
@@ -141,7 +141,7 @@ export default function NetworkSection() {
             whileTap={{ scale: 0.95 }}
             onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
           >
-            Join the Movement →
+            Join the Community →
           </motion.button>
         </motion.div>
       </div>
