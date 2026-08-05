@@ -12,6 +12,8 @@ export default function CTASection() {
   const [email, setEmail] = useState("");
   const [building, setBuilding] = useState("");
   const [stage, setStage] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [website, setWebsite] = useState("");
   const [committed, setCommitted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -21,7 +23,12 @@ export default function CTASection() {
   const scale = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
 
-  const isValid = email.trim() !== "" && building.trim() !== "" && stage !== "" && committed;
+  const isValid =
+    email.trim() !== "" &&
+    building.trim() !== "" &&
+    stage !== "" &&
+    linkedin.trim() !== "" &&
+    committed;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +41,7 @@ export default function CTASection() {
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, building, stage }),
+        body: JSON.stringify({ email, building, stage, linkedin, website }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -147,6 +154,28 @@ export default function CTASection() {
                 </select>
               </div>
 
+              <div className="w-full glass rounded-2xl px-5 py-1">
+                <input
+                  type="text"
+                  value={linkedin}
+                  onChange={(e) => setLinkedin(e.target.value)}
+                  placeholder="linkedin profile url (required)"
+                  disabled={loading}
+                  className="w-full bg-transparent border-none outline-none text-foreground text-sm py-3 placeholder:text-muted-foreground/50 disabled:opacity-50"
+                />
+              </div>
+
+              <div className="w-full glass rounded-2xl px-5 py-1">
+                <input
+                  type="text"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  placeholder="website (if any)"
+                  disabled={loading}
+                  className="w-full bg-transparent border-none outline-none text-foreground text-sm py-3 placeholder:text-muted-foreground/50 disabled:opacity-50"
+                />
+              </div>
+
               <label className="flex items-start gap-2.5 px-2 py-1 cursor-pointer">
                 <input
                   type="checkbox"
@@ -186,10 +215,10 @@ export default function CTASection() {
                 animate={{ rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 0.5 }}
               >
-                🚀
+                📝
               </motion.div>
-              <p className="text-neon font-semibold text-xl">Welcome aboard.</p>
-              <p className="text-muted-foreground text-sm mt-2">Check your inbox for the next steps.</p>
+              <p className="text-neon font-semibold text-xl">Application received.</p>
+              <p className="text-muted-foreground text-sm mt-2">We review every application. If you're a fit, we'll let you in.</p>
             </motion.div>
           )}
         </AnimatePresence>

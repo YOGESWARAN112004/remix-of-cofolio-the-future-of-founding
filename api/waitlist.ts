@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createClient } from "@supabase/supabase-js";
 import nodemailer from "nodemailer";
+import { buildWaitlistEmail } from "./_emailTemplate";
 
 // Server-only clients — instantiated lazily so a missing env var doesn't crash
 // the whole function on import, just the request that needs it.
@@ -26,70 +27,85 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const VALID_STAGES = new Set(["idea", "building", "live", "scaling"]);
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") {
-    res.status(405).json({ error: "Method not allowed" });
-    return;
-  }
-
-  const { email, building, stage } = (req.body ?? {}) as {
-    email?: string;
-    building?: string;
-    stage?: string;
-  };
-
-  if (!email || !EMAIL_RE.test(email)) {
-    res.status(400).json({ error: "A valid email is required" });
-    return;
-  }
-  if (!building || !building.trim()) {
-    res.status(400).json({ error: "Tell us what you're building" });
-    return;
-  }
-  if (!stage || !VALID_STAGES.has(stage)) {
-    res.status(400).json({ error: "Invalid stage" });
-    return;
-  }
-
-  const supabase = getSupabase();
-  if (!supabase) {
-    res.status(503).json({ error: "Waitlist storage is not configured" });
-    return;
-  }
-
-  const { error: dbError } = await supabase.from("waitlist").insert({
-    email: email.trim().toLowerCase(),
-    building: building.trim(),
-    stage,
-  });
-
-  if (dbError) {
-    console.error("Supabase insert failed:", dbError.message);
-    res.status(500).json({ error: "Could not save your application" });
-    return;
-  }
-
-  // The application is saved — a failed confirmation email shouldn't fail the request.
-  const transporter = getTransporter();
-  if (transporter) {
-    try {
-      await transporter.sendMail({
-        from: process.env.SMTP_FROM || process.env.SMTP_USER,
-        to: email,
-        subject: "You're on the Cofolio waitlist",
-        text: [
-          "Thanks for applying — we only let doers in.",
-          "",
-          `What you told us: "${building.trim()}" (${stage}).`,
-          "",
-          "Your AI cofounder is warming up. We'll reach out with next steps soon.",
-          "",
-          "— Cofolio",
-        ].join("\n"),
-      });
-    } catch (mailError) {
-      console.error("Confirmation email failed:", mailError);
+  try {
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
     }
-  }
 
-  res.status(200).json({ ok: true });
+    const { email, building, stage, linkedin, website } = (req.body ?? {}) as {
+      email?: string;
+      building?: string;
+      stage?: string;
+      linkedin?: string;
+      website?: string;
+    };
+
+    if (!email || !EMAIL_RE.test(email)) {
+      res.status(400).json({ error: "A valid email is required" });
+      return;
+    }
+    if (!building || !building.trim()) {
+      res.status(400).json({ error: "Tell us what you're building" });
+      return;
+    }
+    if (!stage || !VALID_STAGES.has(stage)) {
+      res.status(400).json({ error: "Invalid stage" });
+      return;
+    }
+    if (!linkedin || !linkedin.trim()) {
+      res.status(400).json({ error: "A LinkedIn profile is required" });
+      return;
+    }
+
+    const supabase = getSupabase();
+    if (!supabase) {
+      console.error("Waitlist: SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set");
+      res.status(503).json({ error: "Waitlist storage is not configured" });
+      return;
+    }
+
+    const { error: dbError } = await supabase.from("waitlist").insert({
+      email: email.trim().toLowerCase(),
+      building: building.trim(),
+      stage,
+      linkedin: linkedin.trim(),
+      website: website?.trim() || null,
+    });
+
+    if (dbError) {
+      console.error("Supabase insert failed:", dbError.message, dbError.details, dbError.hint);
+      res.status(500).json({ error: "Could not save your application" });
+      return;
+    }
+
+    // The application is saved — a failed confirmation email shouldn't fail the request.
+    const transporter = getTransporter();
+    if (transporter) {
+      try {
+        const { text, html } = buildWaitlistEmail({
+          building: building.trim(),
+          stage,
+          linkedin: linkedin.trim(),
+          website: website?.trim() || undefined,
+        });
+        await transporter.sendMail({
+          from: process.env.SMTP_FROM || process.env.SMTP_USER,
+          to: email,
+          subject: "You're on the Cofolio waitlist",
+          text,
+          html,
+        });
+      } catch (mailError) {
+        console.error("Confirmation email failed:", mailError);
+      }
+    } else {
+      console.warn("Waitlist: SMTP env vars not fully set — skipping confirmation email");
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error("Waitlist handler crashed:", err);
+    res.status(500).json({ error: "Something went wrong. Please try again." });
+  }
 }
