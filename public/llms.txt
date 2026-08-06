@@ -1,0 +1,19 @@
+# Cofolio
+
+> Cofolio is a platform for anyone building a "lean giant" — a one-person, zero-person (AI-run), or small team company that operates like a much bigger organization.
+
+Cofolio combines three things in one platform:
+
+- **Community**: member profiles (what they're building, tools used, stage), themed discussion spaces, and structured cofounder-matching.
+- **Directory**: a searchable directory of lean companies — one-person and zero-person businesses — filterable by industry, stage, and tools used.
+- **Tooling**: an AI cofounder that onboards a new member's business, recommends which tools and agents to wire up, and handles ongoing work like scheduling, drafting, and first-pass compliance. Cofolio also offers an India-specific back-office layer (GST, ITR, ROC filings) as a differentiator.
+
+## Audience
+
+Cofolio is for solo founders, AI-run companies, and small lean teams — including student founders — who want to run a company like a much bigger one without a large headcount.
+
+## Key facts
+
+- Tagline: "Run A Giant Company. Your Only Employee Is You."
+- Waitlist is a gated application, not an instant signup — applicants describe what they're building and their stage (idea, building, live, or scaling), and applications are reviewed before access is granted.
+- Site: https://cofolio.in/

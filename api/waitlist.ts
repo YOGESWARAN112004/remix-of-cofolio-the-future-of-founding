@@ -20,6 +20,12 @@ function getTransporter() {
     port: Number(SMTP_PORT ?? 587),
     secure: process.env.SMTP_SECURE === "true",
     auth: { user: SMTP_USER, pass: SMTP_PASS },
+    // A hung SMTP connection would otherwise block the whole serverless
+    // invocation until Vercel's platform timeout kills it (a bare 500 with
+    // no JSON body) — these keep a bad SMTP config failing fast and catchable.
+    connectionTimeout: 5000,
+    greetingTimeout: 5000,
+    socketTimeout: 5000,
   });
 }
 

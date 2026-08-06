@@ -23,13 +23,6 @@ export default function Navbar() {
 
       <div className="flex items-center gap-3">
         <motion.button
-          className="px-5 py-2 rounded-full text-sm font-medium border border-border text-foreground hover:border-neon/50 hover:text-neon transition-colors"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Sign In
-        </motion.button>
-        <motion.button
           className="px-5 py-2 rounded-full text-sm font-medium bg-neon text-primary-foreground hover:brightness-110 transition-all"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
